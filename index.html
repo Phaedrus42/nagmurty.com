@@ -1084,7 +1084,9 @@ const decoderReady = new Promise(res => {
 });
 function useJSDecoder() { const d = new THREE.DRACOLoader(); d.setDecoderPath('draco/'); d.setDecoderConfig({type: 'js'}); d.preload(); gltfL.setDRACOLoader(d); }
 const parseGLB = (buf) => P((res, rej) => gltfL.parse(buf, '', res, rej));
-load.glb = (u) => Promise.all([load.b64(u), decoderReady]).then(([buf]) => parseGLB(buf));
+// models unpack only once the globe is up, so they don't hold up the first thing you see
+let globeUp; const globeShown = P(r => { globeUp = r; });
+load.glb = (u) => Promise.all([load.b64(u), decoderReady, globeShown]).then(([buf]) => parseGLB(buf));
 
 // ---------------------------------------------------------------- style: 'ink' (white card + ink lines) or 'clay' (colour clay toys on a blueprint)
 const STYLE = window.__STYLE || (new URLSearchParams(location.search).get('style') === 'ink' ? 'ink' : 'clay');
@@ -3601,18 +3603,19 @@ function placeGL() {
 }
 addEventListener('resize', resize);
 async function boot() {
-  setGlobeTheme(isDark());   // the globe's map first; it's what shows first
-  // then start the models downloading (the corner products, then the dioramas), then wait for the globe's own data
+  // the globe's data and map first, with the small corner products alongside; the big dioramas once the globe's data is in
+  setGlobeTheme(isDark());
+  const globeData = Promise.all([load.json('sites.json'), load.img('globe_height.png')]);
   Object.values(TILE_PLATE).forEach(plateOf);   // the corner models (the same ones shown under each diorama)
+  const [meta, hImg] = await globeData;
   const siteGLB = {}; KEYS.forEach(k => { siteGLB[k] = load.glb('site_' + k + '.glb.txt'); });
-  const [meta, hImg] = await Promise.all([load.json('sites.json'), load.img('globe_height.png')]);
   KEYS.forEach(k => { siteInfo[k] = meta.sites[k]; });
   globeMesh = new THREE.Mesh(buildGlobe(hImg), globeMat); gScene.add(globeMesh);
   setGlobeTheme(isDark());
   KEYS.forEach(buildReach);
   resize(); Object.assign(orbit, goal); orbit.rpx = goal.rpx * 0.85;
   ready = true; lastInput = performance.now() / 1000 + 2;   // a moment on Africa and Europe while the arcs set out
-  requestAnimationFrame(() => canvas.classList.add('on'));
+  requestAnimationFrame(() => { canvas.classList.add('on'); setTimeout(globeUp, 0); });
   // models load in the background; each corner fills in when its model is ready
   Promise.allSettled(KEYS.map(k => siteGLB[k])).then(() => { globeHi = true; setGlobeTheme(isDark()); });   // the full-size globe map, once the models are in
   KEYS.forEach(k => {
