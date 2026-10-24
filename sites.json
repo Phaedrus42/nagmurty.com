@@ -1,0 +1,177 @@
+{
+ "sites": {
+  "embrace": {
+   "lat": 12.97,
+   "lon": 77.59,
+   "place": "Bengaluru, India",
+   "radius": 0.5734,
+   "anchors": {
+    "diorama": [
+     -0.07,
+     0.04,
+     -0.11
+    ],
+    "product": [
+     -0.09,
+     0.01,
+     0.255
+    ]
+   },
+   "live": [
+    "GLASS_emx_wrap_window",
+    "LIVE_MOVER_fan",
+    "LIVE_MOVER_fan.001",
+    "LIVE_MOVER_fan.002",
+    "LIVE_emx_led_heat",
+    "LIVE_emx_led_heat.001",
+    "LIVE_emx_led_ready",
+    "LIVE_emx_led_ready.001",
+    "LIVE_wd_beacon_b",
+    "LIVE_wd_beacon_r",
+    "LIVE_wd_tube",
+    "LIVE_wd_tube.001",
+    "LIVE_wd_tube.002",
+    "LIVE_wd_tube.003"
+   ]
+  },
+  "qh": {
+   "lat": 38.89,
+   "lon": -77.03,
+   "place": "Washington, DC",
+   "radius": 0.5482,
+   "anchors": {
+    "diorama": [
+     -0.11,
+     0.05,
+     -0.05
+    ],
+    "product": [
+     0.2,
+     0.02,
+     0.06
+    ]
+   },
+   "live": [
+    "LIVE_MOVER_fig_stairs",
+    "LIVE_MOVER_ring_blueberry_0",
+    "LIVE_MOVER_ring_blueberry_1",
+    "LIVE_MOVER_ring_blueberry_2",
+    "LIVE_MOVER_ring_icy_0",
+    "LIVE_MOVER_ring_icy_1",
+    "LIVE_MOVER_ring_icy_2",
+    "LIVE_MOVER_ring_mint_0",
+    "LIVE_MOVER_ring_mint_1",
+    "LIVE_MOVER_ring_mint_2",
+    "LIVE_lift_panel",
+    "LIVE_mon",
+    "LIVE_mon.001",
+    "LIVE_mon.002",
+    "LIVE_mon.003",
+    "LIVE_mon.004",
+    "LIVE_mon.005",
+    "LIVE_mon.006",
+    "LIVE_mon.007",
+    "LIVE_pebble_screen",
+    "LIVE_sign",
+    "LIVE_vend"
+   ]
+  },
+  "es": {
+   "lat": 37.77,
+   "lon": -122.42,
+   "place": "San Francisco Bay Area",
+   "points": 212300,
+   "radius": 0.4504,
+   "anchors": {
+    "diorama": [
+     -0.07,
+     0.03,
+     -0.03
+    ],
+    "product": [
+     0.2,
+     0.05,
+     0.17
+    ],
+    "cloud": [
+     -0.07,
+     0.32,
+     -0.17
+    ]
+   },
+   "loop": [
+    [
+     -0.13,
+     0.004,
+     0.07
+    ],
+    [
+     -0.16,
+     0.16,
+     -0.01
+    ],
+    [
+     -0.22,
+     0.29,
+     -0.13
+    ],
+    [
+     -0.22,
+     0.324,
+     -0.115
+    ],
+    [
+     0.06,
+     0.324,
+     -0.115
+    ],
+    [
+     0.06,
+     0.29,
+     -0.13
+    ],
+    [
+     0.03,
+     0.16,
+     -0.04
+    ],
+    [
+     -0.01,
+     0.004,
+     0.04
+    ]
+   ],
+   "live": [
+    "LIVE_MOVER_dexter",
+    "LIVE_MOVER_dexter_bar",
+    "LIVE_MOVER_dexter_deck",
+    "LIVE_MOVER_dexter_eng",
+    "LIVE_MOVER_dexter_post",
+    "LIVE_MOVER_dexter_post.001",
+    "LIVE_MOVER_dexter_stack",
+    "LIVE_MOVER_dexter_w",
+    "LIVE_MOVER_dexter_w.001",
+    "LIVE_annot",
+    "LIVE_annot.001",
+    "LIVE_dx_stack0",
+    "LIVE_dx_stack1",
+    "LIVE_dx_stack2",
+    "LIVE_feed_0",
+    "LIVE_feed_1",
+    "LIVE_feed_2",
+    "LIVE_loop",
+    "LIVE_path",
+    "LIVE_path.001",
+    "LIVE_path.002",
+    "LIVE_path.003",
+    "LIVE_path.004",
+    "LIVE_path.005",
+    "LIVE_path.006",
+    "LIVE_train",
+    "LIVE_vd_bar",
+    "LIVE_vd_eye",
+    "LIVE_vd_eye.001"
+   ]
+  }
+ }
+}
