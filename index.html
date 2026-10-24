@@ -159,8 +159,10 @@ body.focused .drawing{cursor:zoom-out}
 .anno::after{content:"";position:absolute;left:50%;bottom:4px;height:var(--h,24px);border-left:1px solid var(--sheet-ink)}
 .anno::before{content:"";position:absolute;left:calc(50% - 3px);bottom:0;width:5px;height:5px;border-radius:50%;border:1px solid var(--sheet-ink);box-sizing:border-box;background:var(--sheet)}
 .anno.off{opacity:0;pointer-events:none}
-.anno i{display:inline-grid;place-items:center;width:17px;height:17px;margin-right:6px;border:1px solid var(--sheet-ink);border-radius:50%;font-style:normal;font-size:10px;letter-spacing:0;background:var(--sheet);text-shadow:none}
+.anno i{display:inline-grid;place-items:center;width:19px;height:19px;margin-right:6px;border:1px solid var(--sheet-ink);border-radius:50%;font-style:normal;font-size:10px;letter-spacing:0;background:var(--sheet);text-shadow:none}
 .anno:hover,.anno.cur{text-decoration:underline;text-underline-offset:4px}
+.anno i svg{width:12px;height:12px;display:block}
+.anno.cur i .pv{display:none}
 .anno.cur i{background:var(--sheet-ink);color:var(--sheet)}
 .dfoot .whole{display:none}
 body.focused .dfoot .whole{display:inline-block}
@@ -1057,7 +1059,7 @@ const manager = new THREE.LoadingManager();
 manager.onProgress = (u, a, b) => { if (bar) bar.style.width = (100 * a / b).toFixed(0) + '%'; };
 const gltfL = new THREE.GLTFLoader(manager);
 const draco = new THREE.DRACOLoader();
-draco.setDecoderPath('draco/'); draco.setDecoderConfig({type: 'js'});  // decoder ships with the page (no wasm, no CDN fetch)
+draco.setDecoderPath('draco/');
 gltfL.setDRACOLoader(draco);
 const P = (fn) => new Promise(fn);
 const load = {
@@ -1067,7 +1069,22 @@ const load = {
   // binary assets ship as base64 text (the host serves text, not .glb)
   b64: (u) => P((res, rej) => { const f = new THREE.FileLoader(manager); f.setResponseType('text'); f.load(u, (t) => { const s = atob(t.trim()); const a = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) a[i] = s.charCodeAt(i); res(a.buffer); }, undefined, rej); }),
 };
-load.glb = (u) => load.b64(u).then(buf => P((res, rej) => gltfL.parse(buf, '', res, rej)));
+// the decoder ships with the page: the WebAssembly build where the page may run it in a worker (several times faster), else the plain-JS one.
+// a tiny worker answers that in a few milliseconds; the decoder starts downloading as soon as it has, alongside the models
+const decoderReady = new Promise(res => {
+  try { const w = new Worker(URL.createObjectURL(new Blob(['try{new WebAssembly.Module(new Uint8Array([0,97,115,109,1,0,0,0]));postMessage(1)}catch(e){postMessage(0)}'], {type: 'application/javascript'})));
+    const done = (ok) => { clearTimeout(t); w.terminate(); res(ok); }, t = setTimeout(() => done(false), 3000);
+    w.onmessage = (e) => done(e.data === 1); w.onerror = () => done(false); } catch (e) { res(false); }
+}).then(wasm => {
+  draco.setDecoderConfig({type: wasm ? 'wasm' : 'js'});
+  const lib = draco._loadLibrary.bind(draco);   // the .wasm ships as base64 text too
+  draco._loadLibrary = (url, type) => /\.wasm$/.test(url) ? load.b64('draco/' + url + '.txt') : lib(url, type);
+  // (a decoder that fails to load would leave the model loader waiting for ever, so make sure of it before any model unpacks)
+  return draco._initDecoder().catch(e => { if (!wasm) throw e; console.warn('WebAssembly decoder unavailable; using the JS one', e); useJSDecoder(); });
+});
+function useJSDecoder() { const d = new THREE.DRACOLoader(); d.setDecoderPath('draco/'); d.setDecoderConfig({type: 'js'}); d.preload(); gltfL.setDRACOLoader(d); }
+const parseGLB = (buf) => P((res, rej) => gltfL.parse(buf, '', res, rej));
+load.glb = (u) => Promise.all([load.b64(u), decoderReady]).then(([buf]) => parseGLB(buf));
 
 // ---------------------------------------------------------------- style: 'ink' (white card + ink lines) or 'clay' (colour clay toys on a blueprint)
 const STYLE = window.__STYLE || (new URLSearchParams(location.search).get('style') === 'ink' ? 'ink' : 'clay');
@@ -2664,11 +2681,17 @@ function buildGlobe(hImg) {
 const outline = new THREE.Mesh(new THREE.RingGeometry(0.994, 1, 160), new THREE.MeshBasicMaterial({color: 0x2a3442, transparent: true, opacity: 0.6, depthTest: false}));
 outline.renderOrder = 5; gScene.add(outline);
 const globeTex = {};
+let globeHi = false;   // the 2k map shows first; on big screens the full-size one follows once the models are in
 function setGlobeTheme(dark) {
-  const key = dark ? 'globe_blueprint' : 'globe_vellum', small = Math.min(innerWidth, innerHeight) < 700, file = key + (small ? '_2k' : '') + '.jpg';
-  const use = (t) => { globeMat.map = t; globeMat.needsUpdate = true; };
-  if (globeTex[file]) use(globeTex[file]);
-  else load.tex(file).then(t => { t.encoding = THREE.sRGBEncoding; t.anisotropy = 8; globeTex[file] = t; if ((isDark() ? 'globe_blueprint' : 'globe_vellum') === key) use(t); });
+  const key = dark ? 'globe_blueprint' : 'globe_vellum', big = Math.min(innerWidth, innerHeight) >= 700;
+  const best = () => { const k = isDark() ? 'globe_blueprint' : 'globe_vellum'; return globeTex[k + '.jpg'] || globeTex[k + '_2k.jpg']; };
+  const use = (t) => { if (t && globeMat.map !== t) { globeMat.map = t; globeMat.needsUpdate = true; } };
+  [key + '_2k.jpg'].concat(big && globeHi ? [key + '.jpg'] : []).forEach((file, i) => {
+    if (file in globeTex) return; globeTex[file] = null;
+    (i ? P((res, rej) => new THREE.TextureLoader().load(file, res, undefined, rej)) : load.tex(file))
+      .then(t => { t.encoding = THREE.sRGBEncoding; t.anisotropy = 8; globeTex[file] = t; use(best()); }).catch(() => { delete globeTex[file]; });
+  });
+  use(best());
   outline.material.color.copy(cssColor('--ink')); outline.material.opacity = dark ? 0.7 : 0.6;
 }
 themeHooks.push(setGlobeTheme);
@@ -3411,10 +3434,12 @@ const HOT = {
   es: [['Robot skid steer', {obj: 'es_skid_yard', y: 0.075}, 0.3, 26], ['Robot trimmer', {obj: 'es_vd_trim', y: 0.045}, 0.24, 18], ['Robot leaf blower', {obj: 'es_vd_blow', y: 0.045}, 0.24, 18],
        ['Teleoperator', {obj: 'es_tele', y: 0.062}, 0.26, 16], ['Data annotator', {obj: 'es_annot1', y: 0.062}, 0.26, 16], ['Data satellite', {obj: 'es_sat', y: 0.012}, 0.4, 16]],
 };
+// a magnifying glass on each label, so it reads as something to click (a plus to look closer; a minus once you're in, to come back out)
+const ZOOM_ICON = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="6.6" cy="6.6" r="4.6"/><path d="M10 10l4.2 4.2M4.6 6.6h4"/><path class="pv" d="M6.6 4.6v4"/></svg>';
 const hotBox = document.createElement('div'); hotBox.className = 'annos'; document.querySelector('.over').appendChild(hotBox);
 const hotEls = {}; let focused = null;
 Object.entries(HOT).forEach(([k, list]) => { hotEls[k] = list.map(([txt, p, z, h, prod], i) => {
-  const el = document.createElement('button'); el.type = 'button'; el.tabIndex = -1; el.className = 'anno off'; el.innerHTML = `<i>${i + 1}</i>${txt}`; el.style.setProperty('--h', h + 'px'); hotBox.appendChild(el);
+  const el = document.createElement('button'); el.type = 'button'; el.tabIndex = -1; el.className = 'anno off'; el.innerHTML = `<i aria-hidden="true">${ZOOM_ICON}</i>${txt}`; el.title = 'Look closer'; el.style.setProperty('--h', h + 'px'); hotBox.appendChild(el);
   const a = {el, p: p ? (p.obj ? new V3() : new V3(...p)) : null, obj: p && p.obj, dy: p && p.y, z, name: txt, prod, h0: h, h}; el.addEventListener('click', () => focusOn(a.p, a.z, a)); return a; }); });
 function placeHots(cam, rect, clip) {
   const placed = [];   // labels that would overlap climb on longer leaders
@@ -3576,6 +3601,10 @@ function placeGL() {
 }
 addEventListener('resize', resize);
 async function boot() {
+  setGlobeTheme(isDark());   // the globe's map first; it's what shows first
+  // then start the models downloading (the corner products, then the dioramas), then wait for the globe's own data
+  Object.values(TILE_PLATE).forEach(plateOf);   // the corner models (the same ones shown under each diorama)
+  const siteGLB = {}; KEYS.forEach(k => { siteGLB[k] = load.glb('site_' + k + '.glb.txt'); });
   const [meta, hImg] = await Promise.all([load.json('sites.json'), load.img('globe_height.png')]);
   KEYS.forEach(k => { siteInfo[k] = meta.sites[k]; });
   globeMesh = new THREE.Mesh(buildGlobe(hImg), globeMat); gScene.add(globeMesh);
@@ -3585,15 +3614,15 @@ async function boot() {
   ready = true; lastInput = performance.now() / 1000 + 2;   // a moment on Africa and Europe while the arcs set out
   requestAnimationFrame(() => canvas.classList.add('on'));
   // models load in the background; each corner fills in when its model is ready
+  Promise.allSettled(KEYS.map(k => siteGLB[k])).then(() => { globeHi = true; setGlobeTheme(isDark()); });   // the full-size globe map, once the models are in
   KEYS.forEach(k => {
-    load.glb('site_' + k + '.glb.txt').then(g => {
+    siteGLB[k].then(g => {
       buildSiteScene(k, g, siteInfo[k]);
       if (k === 'es') {
       }
       tileEls[k].querySelector('.stage').removeAttribute('data-loading');
     }).catch(e => { console.warn('model', k, e); tileEls[k].querySelector('.stage').removeAttribute('data-loading'); });
   });
-  Object.values(TILE_PLATE).forEach(plateOf);   // the corner models (the same ones shown under each diorama)
   const h = (location.hash || '').slice(1); if (DATA[h]) setTimeout(() => open(h), 300);
   let last = performance.now(), t = 0;
   window.__setT = (v) => { t = v; };   // for checking a moment of the dioramas' animation
