@@ -757,7 +757,8 @@ const STORY = {
         'I took it through regulatory approval,[2] and GE Healthcare partnered with us to take the warmer into rural India.[13]']],
       ['Lessons learnt', {
         worked: ['The basic idea held up. It needs no power at the bedside, the bag is easy to clean, and clinics could afford it. The design has hardly changed since, and a kit is now in the Science Museum Group’s collection in London.[2]'],
-        broke: ['It took roughly sixty versions to get there, as we learned in the field and scaled up manufacturing.[3] Some problems only showed up later. In a survey of paediatricians in Gujarat, more than half said it was hard to monitor a newborn while it was in the warmer.[4] Keeping a baby sealed in and warm makes it harder for a doctor to see them.'],
+        brokeLbl: 'The trade-offs',
+        broke: ['Getting there took roughly sixty versions, as we learned in the field and scaled up manufacturing.[3]', 'Every intervention has trade-offs, and ours was observability. Wrapping a baby up to keep them warm also makes them harder to see. In a survey of paediatricians in Gujarat, more than half said it was harder to monitor a newborn while it was in the warmer.[4] That comes from the same design choice as the warmer’s strength, and it’s the kind of thing you only learn from the people using it, at scale.'],
         draft: 'I’m writing up the hardest engineering and regulatory problems, and will add them here.'}],
       ['What it taught me', [
         'Design for the place where the thing will be used. For us that meant the nurse, the mother, the power supply and the price, as much as the baby.']],
@@ -926,7 +927,7 @@ const ESSAYS = [
            'So the warmer needs no power at the bedside. A pack of material that melts at 37 °C, body temperature, holds a baby at that temperature for hours, and a water bed on top spreads the heat. It goes into a sleeping bag a nurse can clean between babies, and a heater recharges it whenever there’s power. Early prototypes used buttons instead of zippers and Velcro, so a clinic could repair them.[2] It took roughly sixty versions to get there.[3]',
            'The people who taught us most were the caregivers. I’ve called the nurses in those hospitals the unsung heroes of public health.[4] I once spent a day at SVYM Hospital in Sargur, a tidy little hospital in a remote corner of southern India. A frightened mother arrived in a makeshift ambulance, and after a few anxious hours a baby girl was born at about four pounds. The nurse heated a warm pack, which the staff kept ready at all times, slipped it into the sleeping bag and carried the warmer to the labour room. The baby went to her mother warm.[5]',
            'That’s where my best ideas came from: seeing the product in use, and asking the caregivers how we might improve it.[4]',
-           'Some problems only showed up at scale. In a survey of paediatricians in Gujarat, more than half said it was hard to monitor a newborn while it was in the warmer.[6] Keeping a baby sealed in and warm makes it harder for a doctor to see them. The trade-off comes from the same design choice as the warmer’s strength.',
+           'Every intervention has trade-offs, and some only show up at scale. Ours was observability. In a survey of paediatricians in Gujarat, more than half said it was harder to monitor a newborn while it was in the warmer.[6] Wrapping a baby up to keep them warm also makes them harder to see. The trade-off comes from the same design choice as the warmer’s strength.',
            'The lesson I took is to design for the place where the thing will be used: the nurse, the mother, the power supply and the price, as much as the baby. The device is only one part of what you’re designing.'],
     src: [['Trend Hunter: interview with Naganand Murty, co-founder of Embrace', 'https://www.trendhunter.com/trends/naganand-murty'],
           ['Stanford Magazine: Baby, it’s cold outside', 'https://stanfordmag.org/contents/baby-it-s-cold-outside'],
@@ -970,7 +971,7 @@ function storyHTML(k) {
   const sec = ([label, body]) => {
     if (Array.isArray(body)) return `<section class="part"><h3>${label}</h3>${body.map(p => `<p>${rich(k, p)}</p>`).join('')}${figAt(label)}</section>`;
     if (body.text) return `<section class="part"><h3>${label}</h3>${body.text.map(p => `<p>${rich(k, p)}</p>`).join('')}${body.draft ? `<p class="draft">${body.draft}</p>` : ''}</section>`;
-    return `<section class="part"><h3>${label}</h3><h4>What worked</h4>${body.worked.map(p => `<p>${rich(k, p)}</p>`).join('')}<h4>What didn’t</h4>${body.broke.map(p => `<p>${rich(k, p)}</p>`).join('')}${body.draft ? `<p class="draft">${body.draft}</p>` : ''}</section>`;
+    return `<section class="part"><h3>${label}</h3><h4>What worked</h4>${body.worked.map(p => `<p>${rich(k, p)}</p>`).join('')}<h4>${body.brokeLbl || 'What didn’t'}</h4>${body.broke.map(p => `<p>${rich(k, p)}</p>`).join('')}${body.draft ? `<p class="draft">${body.draft}</p>` : ''}</section>`;
   };
   // the press, newest first; undated items (patents, an interview) go last
   const yr = (p) => { const m = p.d.match(/(\w{3} )?(\d{4})/); return m ? +m[2] * 12 + (m[1] ? Object.keys(MON).indexOf(m[1].trim()) : 0) : 0; };
