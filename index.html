@@ -527,13 +527,13 @@ body.textpage .phead{display:none}
   <header class="name">
     <h1>Nag Murty</h1>
     <p class="sub">I build frontier tech companies and take them to scale in the real world.</p>
-    <p class="facts">Two exits and more than $30M raised. The Embrace warmer has kept over 1.35 million newborns warm in 33 countries.</p>
+    <p class="facts">Two exits and more than $30M raised. The Embrace warmer has impacted the lives of more than 1.35 million newborns in 33 countries.</p>
     <nav class="pages" aria-label="More"><button type="button" data-open="ideas">Ideas</button><button type="button" data-open="about">About</button><button type="button" data-open="contact">Contact</button></nav>
   </header>
   <div id="globeSlot"></div><div id="globeHit" aria-hidden="true"></div>
-  <p class="totals" id="totals" hidden><span style="--c:var(--embrace)"><i></i><b>33</b> countries</span><span style="--c:var(--embrace)"><i></i><b>1.35M+</b> newborns kept warm</span><span style="--c:var(--es)"><i></i><b>14+</b> US states</span></p>
+  <p class="totals" id="totals" hidden><span style="--c:var(--embrace)"><i></i><b>33</b> countries</span><span style="--c:var(--embrace)"><i></i><b>1.35M+</b> newborns’ lives impacted</span><span style="--c:var(--es)"><i></i><b>14+</b> US states</span></p>
   <button class="tile tr" type="button" data-key="es" style="--c:var(--es)"><span class="stage" data-loading></span><span class="cap"><b><i></i>Electric Sheep Robotics</b><span>Founder and CEO</span><span class="place"><span class="lead">Robots that learned landscaping on real jobs.</span> We retrofitted commercial mowers and loaders to drive themselves, then bought landscaping companies so the robots worked real properties every day and kept getting better.</span></span></button>
-  <button class="tile br" type="button" data-key="embrace" style="--c:var(--embrace)"><span class="stage" data-loading></span><span class="cap"><b><i></i>Embrace</b><span>Co-founder and CTO</span><span class="place"><span class="lead">An infant warmer that needs no power at the bedside.</span> A pack that melts at 37&nbsp;°C keeps a premature baby at body temperature for hours, where incubators cost too much or the power keeps cutting out. More than 1.35 million newborns have been kept warm in it.</span></span></button>
+  <button class="tile br" type="button" data-key="embrace" style="--c:var(--embrace)"><span class="stage" data-loading></span><span class="cap"><b><i></i>Embrace</b><span>Co-founder and CTO</span><span class="place"><span class="lead">An infant warmer that needs no power at the bedside.</span> A pack that melts at 37&nbsp;°C keeps a premature baby at body temperature for hours, where incubators cost too much or the power keeps cutting out. It has impacted the lives of more than 1.35 million newborns, and Sudan and Zambia are building it into their national standards of newborn care.</span></span></button>
   <button class="tile b3" type="button" data-key="qh" style="--c:var(--qh)"><span class="stage" data-loading></span><span class="cap"><b><i></i>Project Boundary</b><span>Founder and principal investigator</span><span class="place"><span class="lead">A smartwatch that nudged healthier choices at work.</span> An NSF-funded research project that began at HHS. Beacons by the stairs, the lift and the water fountain told the watch where you were, so a nudge arrived at the moment you were making the choice.</span></span></button>
 </div>
 <aside class="sheet" id="sheet" hidden aria-label="Project sheet">
@@ -575,14 +575,14 @@ const SITE = 'https://claude.ai/artifact/3GDiyzRkUaMj3WcMmJjFYy';
 // ---------------------------------------------------------------- content (facts only; sources in each sheet)
 const DATA = {
   embrace: {name: 'Embrace', short: 'Embrace', t: 'Embrace Nest', tag: 'An infant warmer that needs no power at the bedside', meta: 'Co-founder and CTO',
-    desc: 'A pack that melts at 37&nbsp;°C keeps a premature baby at body temperature for hours, where incubators cost too much or the power keeps cutting out. More than 1.35 million newborns have been kept warm in it.',
+    desc: 'A pack that melts at 37&nbsp;°C keeps a premature baby at body temperature for hours, where incubators cost too much or the power keeps cutting out. It has impacted the lives of more than 1.35 million newborns, and Sudan and Zambia are building it into their national standards of newborn care.',
     problem: ['Premature and low-birth-weight babies struggle to stay warm. Incubators are expensive and need reliable power, which many district hospitals and clinics don’t have.'],
     built: ['An infant warmer that keeps a newborn at 37 °C for hours with no power at the bedside: a pack that melts at 37 °C and holds that temperature, a sleeping bag a nurse can clean between babies, and a heater that recharges the pack.',
             'I built the first product and the team, and took it through regulatory approval. The design has barely changed since.'],
-    result: ['Embrace Global has kept 1.35M+ newborns warm across 33 countries, including conflict and crisis zones in Ukraine, Gaza, Sudan, Yemen and Haiti.',
+    result: ['The warmer has impacted the lives of 1.35M+ newborns across 33 countries, including conflict and crisis zones in Ukraine, Gaza, Sudan, Yemen and Haiti.',
              'At China Little Flower’s baby home in Beijing, a 930 g premature boy named Long was kept warm in one of the first warmers they received. By his first birthday he was a healthy toddler.',
              'Embrace Innovations, the social enterprise behind it, was acquired. One unit is in the Science Museum Group collection in London.'],
-    stats: [['33', 'countries'], ['1.35M+', 'newborns kept warm']],
+    stats: [['33', 'countries'], ['1.35M+', 'newborns’ lives impacted']],
     src: 'The globe’s countries follow Embrace Global’s deployment map.',
     tb: [['Sheet', '01 of 03'], ['Origin', 'd.school, Stanford'], ['Model scale', 'Hospital 1:30 · kit enlarged'], ['Shown', 'Transport, maternity, step-down NICU']],
     link: SITE + '#embrace'},
@@ -616,6 +616,7 @@ const MARKS = [
   ['embrace', 'Sargur, India', 12.0, 76.4, 'A day at SVYM Hospital, with a four-pound baby in the warmer and a CNN crew in the corridor.'],
   ['embrace', 'London', 51.5, -0.12, 'An Embrace kit is in the Science Museum Group’s collection here.'],
   ['embrace', 'Denmark', 55.68, 12.57, 'The warmer won People’s Choice at the Danish INDEX: design awards.'],
+  ['embrace', 'San Jose', 37.33, -121.89, 'The warmer is one of the key pieces in The Tech Interactive’s exhibits, and Embrace won the Tech Awards’ Laureate Impact Award.'],
 ];
 const PARTS = [['problem', 'Problem'], ['built', 'Built'], ['result', 'Result']];
 function textHTML(k) {
@@ -641,11 +642,11 @@ const REST_VIEW = [24, 22];   // the globe opens on Africa and Europe, then turn
 const latFor = (lon) => { const d = Math.abs(((lon + 95) % 360 + 540) % 360 - 180); return 24 + 10 * Math.max(0, 1 - d / 60); };
 const REACH = {
   embrace: {origin: [37.4275, -122.1697], place: 'Stanford, California', say: 'Embrace began here, in a class that asked for an infant warmer at 1% of an incubator’s cost.', view: [26, 8], zoom: 1.0, pts: [
-    ['Uganda', 1.4, 32.3, 0, null, '541 warmers in use with BAMA, Masaka and Rwenzori.'], ['Ukraine', 49.0, 31.4, 1, null, '3,000 warmers donated during the war; some kept newborns warm in bomb shelters.'], ['Egypt', 26.8, 30.8], ['Gaza', 31.42, 34.37, 1, null, 'Warmers placed through UNRWA to keep displaced newborns warm.'], ['Sudan', 15.6, 30.2, 1, null, '300 warmers arrived, the first of three shipments.'], ['Syria', 35.0, 38.5, 0, null, 'Newborns were kept warm in Embrace warmers here in 2025.'],
+    ['Uganda', 1.4, 32.3, 0, null, '541 warmers going into 92 health facilities and 41 government ambulances across Masaka and Rwenzori.'], ['Ukraine', 49.0, 31.4, 1, null, '680 warmers deployed to hospitals across Ukraine during the war; nurses carried newborns in them to bomb shelters during air raids.'], ['Egypt', 26.8, 30.8], ['Gaza', 31.42, 34.37, 1, null, 'Warmers placed through UNRWA to keep displaced newborns warm.'], ['Sudan', 15.6, 30.2, 1, null, 'Now part of Sudan’s national newborn care: in the national training manual and health reporting, and being rolled out to every public health facility.'], ['Syria', 35.0, 38.5, 0, null, 'Newborns were kept warm in Embrace warmers here in 2025.'],
     ['Chad', 15.4, 18.7], ['Armenia', 40.1, 45.0], ['Cameroon', 5.7, 12.7, 0, null, 'One of four countries the warmer reached for the first time in 2025.'], ['Algeria', 28.0, 2.6], ['Yemen', 15.6, 48.0, 1, null, 'Warmers in use here in 2025, one of more than 30 countries.'], ['Liberia', 6.4, -9.4],
     ['Senegal', 14.5, -14.5], ['Haiti', 19.0, -72.3, 1, null, 'A pilot with more than 30 warmers, while hospitals around it were closing.'], ['Guatemala', 15.7, -90.2], ['Mali', 17.6, -3.9], ['Nigeria', 9.1, 8.7], ['Gabon', -0.8, 11.6],
-    ['Angola', -11.2, 17.9], ['Central African Republic', 6.6, 20.9], ['Zambia', -13.1, 27.8, 0, null, 'In eight hospitals, and being written into the national standards for moving newborns.'], ['DR Congo', -2.9, 23.7, 0, null, 'Warmers in use here in 2025.'], ['Ethiopia', 9.1, 40.5, 0, null, 'New in 2025, joining more than 150 health facilities that used the warmer that year.'],
-    ['Kenya', 0.2, 37.9], ['Tanzania', -6.4, 34.9, 0, null, 'Warmers kept newborns warm here in 2025.'], ['Malawi', -13.3, 34.3], ['Mozambique', -18.7, 35.5], ['Rwanda', -1.9, 29.9], ['Somalia', 5.2, 46.2],
+    ['Angola', -11.2, 17.9], ['Central African Republic', 6.6, 20.9], ['Zambia', -13.1, 27.8, 0, null, 'Zambia’s Ministry of Health is writing it into the national standards for moving newborns; it is in use in eight hospitals.'], ['DR Congo', -2.9, 23.7, 0, null, 'Warmers in use here in 2025.'], ['Ethiopia', 9.1, 40.5, 0, null, 'New in 2025, joining more than 150 health facilities that used the warmer that year.'],
+    ['Kenya', 0.2, 37.9], ['Tanzania', -6.4, 34.9, 0, null, 'Warmers deployed to newborns in Tanzania’s hospitals.'], ['Malawi', -13.3, 34.3], ['Mozambique', -18.7, 35.5], ['Rwanda', -1.9, 29.9], ['Somalia', 5.2, 46.2],
     ['Afghanistan', 34.5, 69.2, 0, null, 'At Rabia Balkhi Hospital in Kabul, more than 1,700 babies were served in the warmers’ first three months.'], ['Beijing', 40.05, 116.6, 0, null, 'Long, born at 930 g, was kept warm in one of the first warmers at a Beijing baby home, and grew into a healthy toddler.'], ['Philippines', 12.9, 121.8], ['India', 21.0, 79.0, 0, null, 'We built the warmer here, ran its first trials, and got it into hospitals.']]},
   qh: {origin: [38.8868, -77.0144], place: 'Washington, DC', say: 'At HHS I started Project Boundary, an NSF-funded research project: beacons and a smartwatch that nudged healthier choices at work.', view: [36, -84], zoom: 1.3, pts: []},
   es: {origin: [38.25, -78.3], place: 'Virginia', say: 'I built Electric Sheep’s first robots in my garage here: commercial mowers and skid steers that drive themselves.', view: [37, -91], zoom: 1.3, cluster: true, pts: [
@@ -733,7 +734,10 @@ const STORY = {
            ['em-warmpak', 'The warm pack that goes inside the sleeping bag: a layer that melts at 37 °C, under a water bed that spreads the heat. It holds that temperature for hours.', '© The Board of Trustees of the Science Museum', 'https://collection.sciencemuseumgroup.org.uk/objects/co8607754']]},
     film: {
       main: {v: 'em-ted', o: 'TED', d: 'Nov 2009', len: '4:29', k: 'Talk', t: 'Co-founder Jane Chen presents the warmer at TEDIndia.', cr: 'TED, licensed CC BY-NC-ND 4.0', u: 'https://www.ted.com/talks/jane_chen_a_warm_embrace_that_saves_lives'},
-      yt: [['-PyY94ssSww', 'Embrace Infant Warmer Could Save Lives', 'ABC News', 'Sep 2011', '6:05'],
+      yt: [['ZjEw25HSaZM', 'Nonprofit sends portable incubators to pregnant women in Ukraine', 'ABC News', 'May 2022', '5:54'],
+           ['o_gzzLwUW-M', 'Ukraine update: the necessity of portable incubators', 'Embrace Global', 'Jan 2023', '3:03'],
+           ['2Bc92svUoYo', 'Premature babies are at extreme risk in Ukraine', 'Embrace Global', 'Jan 2023', '1:33'],
+           ['-PyY94ssSww', 'Embrace Infant Warmer Could Save Lives', 'ABC News', 'Sep 2011', '6:05'],
            ['c_PEuMHl2Qs', 'CNN Ideas: The Low-Cost Incubator That Saves Lives', 'CNN', '', '1:34'],
            ['FKd_zPJMBtQ', 'Embrace Infant Warmer, INDEX: Award winner', 'The Index Project', 'Nov 2017', '4:13'],
            ['-buc0DCsKII', 'Kiran Mazumdar-Shaw on the Embrace Infant Warmer', 'Embrace Innovations', 'Jun 2014', '0:39'],
@@ -742,14 +746,15 @@ const STORY = {
     print: [['print-natgeo', 'National Geographic', 'Nov 2010', '“Big Ideas, Little Packages”, The Big Idea page, National Geographic, with the Embrace prototype.'],
             ['print-entrepreneur', 'Entrepreneur', 'Nov 2012', 'Cover of Entrepreneur (India): Naganand Murty and Rahul Panicker of Embrace Innovations, makers of low-cost warmers for premature babies.'],
             ['print-economist', 'The Economist', 'Dec 2013', 'The Economist: the Embrace co-founders, winners of the Social and Economic Innovation Award.']],
-    seen: ['National Geographic', 'The Economist', 'ABC News', 'TED', 'Entrepreneur', 'Fast Company', 'Business Today', 'Devex', 'Open Magazine', 'Pioneers Post'],
+    seen: ['UNICEF', 'National Geographic', 'The Economist', 'ABC News', 'CNN', 'TED', 'Entrepreneur', 'Fast Company', 'Fox News', 'Business Today', 'Devex', 'Open Magazine', 'Pioneers Post'],
     secs: [
       ['The field', [
         'Premature babies can’t keep themselves warm. The usual answer was an incubator that cost about $20,000 and needed steady electricity, which most rural clinics didn’t have. Our brief in Stanford’s Design for Extreme Affordability class was to do it for 1% of that.',
+        'Warmth matters more than it sounds. WHO calls hypothermia, with infection, one of the two big killers of small babies. Keeping babies under 2 kg warm against a parent’s skin cuts deaths in hospital by 40%, and by a further 25% when it starts right after birth.[12] A warmer that does that job where there’s no incubator, and no power, changes a baby’s chances.',
         'The team went to Kathmandu to meet the mothers, nurses and clinics who would use it.[1] Heating turned out to be the easy part. The power cut out, staff had little training, families lived far from hospitals, and it all had to be cheap.']],
       ['Version one', [
         'As co-founder and CTO I built the product and the team that shipped it. It’s a pack with two layers: a material that melts at 37 °C, body temperature, and holds it for hours as it sets, under a water bed that spreads the heat and gives the baby a soft place to lie. The pack goes into a seamless sleeping bag a nurse can clean between babies, and a heater recharges it whenever there’s power.',
-        'I took it through regulatory approval.[2]']],
+        'I took it through regulatory approval,[2] and GE Healthcare partnered with us to take the warmer into rural India.[13]']],
       ['Lessons learnt', {
         worked: ['The basic idea held up. It needs no power at the bedside, the bag is easy to clean, and clinics could afford it. The design has hardly changed since, and a kit is now in the Science Museum Group’s collection in London.[2]'],
         broke: ['It took roughly sixty versions to get there, as we learned in the field and scaled up manufacturing.[3] Some problems only showed up later. In a survey of paediatricians in Gujarat, more than half said it was hard to monitor a newborn while it was in the warmer.[4] Keeping a baby sealed in and warm makes it harder for a doctor to see them.'],
@@ -758,12 +763,22 @@ const STORY = {
         'Design for the place where the thing will be used. For us that meant the nurse, the mother, the power supply and the price, as much as the baby.']],
       ['What happened next', [
         'After I left, the Embrace nonprofit merged with Thrive Networks, and the warmer went out through much larger public health programmes.[5]',
-        'Embrace has counted 1,355,911 babies kept warm in more than 30 countries,[6] including Ukraine, Gaza, Sudan, Yemen and Haiti.',
-        'One of them was Long, a premature boy born at 930 g. He was kept warm in one of the first warmers at China Little Flower’s baby home in Beijing, and by his first birthday he was a healthy toddler.[7]']],
+        'The warmer has now impacted the lives of 1,355,911 babies in more than 30 countries.[6] It is part of national newborn care in Sudan: it is in the national training manual and the national health reporting system, and warmers are being rolled out to every public health facility in the country.[8] Zambia’s Ministry of Health is adding it to the sixth edition of the national standards for moving newborns.[9] Europe’s standards of care for newborn health list it as a lighthouse project.[10]',
+        'It has gone where incubators can’t. In Ukraine, UNICEF took the warmers into hospitals in Dnipro, Sumy and Pokrovsk, and nurses used them to carry newborns to bomb shelters during air raids.[11] They have since reached newborns in Gaza, Sudan, Yemen and Haiti.',
+        'One of the earliest babies was Long, a premature boy born at 930 g. He was kept warm in one of the first warmers at China Little Flower’s baby home in Beijing, and by his first birthday he was a healthy toddler.[7]']],
     ],
     recog: [['The Economist Innovation Award', 'Social and economic innovation, shared by the four co-founders'], ['INDEX: Design to Improve Life', 'People’s Choice'],
+            ['The Tech Awards', 'Laureate, and later the Laureate Impact Award'], ['European Standards of Care for Newborn Health', 'Lighthouse project'],
             ['Science Museum Group collection', 'An Embrace Nest kit, in London'], ['Three US patents', 'On infant warming systems']],
     press: [
+      {o: 'UNICEF', d: 'Jul 2022', k: 'Story', t: 'The warmers in Ukraine’s hospitals, where nurses carried newborns in them to bomb shelters during air raids.', u: 'https://www.unicef.org/ukraine/en/stories/portable-infant-warmers-save-lives', f: 1},
+      {o: 'ABC News', d: 'May 2022', k: 'TV · video', t: 'The warmers headed to newborns in Ukraine during the war.', u: 'https://www.youtube.com/watch?v=ZjEw25HSaZM'},
+      {o: 'Fox News', d: 'Apr 2022', k: 'Article', t: 'Warmers going to Ukraine’s bomb shelters and hospitals.', u: 'https://www.foxnews.com/us/nonprofit-sending-incubators-babies-ukraine'},
+      {o: 'Fast Company', d: 'May 2022', k: 'Article', t: 'Premature births tripled in Ukraine, and the warmers went in.', u: 'https://www.fastcompany.com/90750093/premature-births-have-tripled-in-ukraine-this-nonprofit-is-donating-portable-incubators'},
+      {o: 'CNN', d: 'Oct 2023', k: 'Article', t: 'Racing to get the warmers into Israel and Gaza.', u: 'https://www.cnn.com/2023/10/25/business/baby-incubators-israel-gaza/index.html'},
+      {o: 'NextBillion', d: 'Dec 2010', k: 'News', t: 'GE Healthcare and Embrace to take the warmer into rural India.', u: 'https://nextbillion.net/news/ge-health-embrace-to-distribute-infant-warmer-in-early-2011', f: 1},
+      {o: 'The Tech Awards', d: 'Sep 2015', k: 'Award', t: 'The Laureate Impact Award, for progress since Embrace was named a laureate.', u: 'https://news.cision.com/the-tech-museum-of-innovation/r/tech-awards-honors-international-innovators-using-technology-to-solve-pressing-global-problems,c9830337'},
+      {o: 'ESCNH', d: 'Standards', k: 'Standards', t: 'A lighthouse project of the European Standards of Care for Newborn Health.', u: 'https://newborn-health-standards.org/implementation/lighthouse-projects/embrace-infant-warmer/'},
       {o: 'ABC News', d: 'Dec 2010', k: 'TV', t: 'A national news report on the warmer and its first trials in India.', u: 'https://abcnews.com/Health/embrace-infant-warmer-save-thousands/story?id=12366774', f: 1},
       {o: 'Science Museum Group', d: '2019', k: 'Collection', t: 'An Embrace Nest kit, now in the collection in London.', u: 'https://collection.sciencemuseumgroup.org.uk/objects/co8607754', f: 1},
       {o: 'INDEX: Award', d: '2011', k: 'Award', t: 'People’s Choice at the Danish INDEX: design awards.', u: 'https://theindexproject.org/post/embrace-infant-warmer', f: 1},
@@ -783,7 +798,13 @@ const STORY = {
           ['Usage of Embrace in Gujarat, India: a survey of paediatricians', 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4230002/'],
           ['Blue Planet Network: the Embrace and Thrive Networks merger', 'https://www.blueplanetnetwork.org/news/embrace-merger'],
           ['Embrace Global: what 1.3 million babies taught us', 'https://www.embraceglobal.org/post/what-1-3-million-babies-taught-us'],
-          ['China Little Flower’s blog', '']],
+          ['China Little Flower’s blog', ''],
+          ['Embrace Global: Sudan, part of the national system', 'https://www.embraceglobal.org/post/a-second-shipment-of-warmth-has-arrived-in-sudan'],
+          ['Embrace Global: Uganda, with Sudan’s training manual and Zambia’s transport standards', 'https://www.embraceglobal.org/post/a-new-shipment-of-life-saving-warmth-reaches-uganda'],
+          ['European Standards of Care for Newborn Health: the Embrace warmer as a lighthouse project', 'https://newborn-health-standards.org/implementation/lighthouse-projects/embrace-infant-warmer/'],
+          ['UNICEF Ukraine: portable infant warmers save young lives', 'https://www.unicef.org/ukraine/en/stories/portable-infant-warmers-save-lives'],
+          ['WHO: kangaroo mother care started immediately after birth', 'https://www.who.int/news/item/26-05-2021-kangaroo-mother-care-started-immediately-after-birth-critical-for-saving-lives-new-research-shows'],
+          ['NextBillion: GE Healthcare and Embrace to distribute the warmer', 'https://nextbillion.net/news/ge-health-embrace-to-distribute-infant-warmer-in-early-2011']],
   },
   qh: {
     secs: [
@@ -819,7 +840,7 @@ const PAGES = {
   ideas: {name: 'Ideas', t: 'Ideas', tag: 'Essays, mostly about getting hard technology to work outside the lab.', meta: '', parts: []},
   about: {name: 'About', t: 'About', tag: 'Engineer and founder.', meta: '',
     parts: [
-      ['Bio', '<p>Naganand “Nag” Murty is an engineer and founder. He builds the first working versions of new hardware and gets them into use.</p><p>As co-founder and CTO of {open:embrace|Embrace}, he built the low-cost infant warmer that has since kept more than 1.35 million newborns warm. At the HHS IDEA Lab he started {open:qh|Project Boundary}, a smartwatch that nudged healthier choices at work. He founded {open:es|Electric Sheep Robotics}, which trained outdoor robots on the work of landscaping companies it bought. Electric Sheep was acquired. He holds six US patents.</p>'],
+      ['Bio', '<p>Naganand “Nag” Murty is an engineer and founder. He builds the first working versions of new hardware and gets them into use.</p><p>As co-founder and CTO of {open:embrace|Embrace}, he built the low-cost infant warmer that has since impacted the lives of more than 1.35 million newborns, and Sudan and Zambia are building it into their national standards of newborn care. At the HHS IDEA Lab he started {open:qh|Project Boundary}, a smartwatch that nudged healthier choices at work. He founded {open:es|Electric Sheep Robotics}, which trained outdoor robots on the work of landscaping companies it bought. Electric Sheep was acquired. He holds six US patents.</p>'],
       ['Education', '<p>IIT Bombay: BS and MS, Aerospace Engineering.</p><p>Stanford University: MS, Management Science and Engineering.</p>'],
       ['Patents', '<p>Six granted US patents: three on infant warming (Embrace) and three on robotics (Electric Sheep). <a href="https://patents.justia.com/inventor/naganand-murty" target="_blank" rel="noopener">Justia ↗</a></p>'],
       ['Awards', '<p>Economist Innovation Award, to the Embrace co-founders. INDEX: Design to Improve Life, People’s Choice. RBR50 Startup of the Year and an AI TechAward, for Electric Sheep.</p>'],
