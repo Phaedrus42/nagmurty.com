@@ -5,10 +5,18 @@
   window.__STYLE = st === 'ink' ? 'ink' : 'clay'; if (window.__STYLE === 'clay') r.dataset.style = 'clay';
   r.dataset.bg = /^(blueprint|graphite|forest|aubergine)$/.test(bg || '') ? bg : 'blueprint';
 })();</script>
+<script>(function () {   // the globe's height map, its map and the place list start downloading now, alongside the 3D library
+  var d = document, dark = window.__STYLE !== 'ink' || !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+  [['globe_height.png', 'image'], [(dark ? 'globe_blueprint' : 'globe_vellum') + '_2k.jpg', 'image'], ['sites.json', 'fetch']].forEach(function (f) {
+    var l = d.createElement('link'); l.rel = 'preload'; l.href = f[0]; l.as = f[1]; l.crossOrigin = 'anonymous'; d.head.appendChild(l); });
+  // the fonts load without holding up the first paint (the text shows in a fallback face for a moment)
+  var f = d.createElement('link'); f.rel = 'stylesheet'; f.href = 'https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap'; f.media = 'print'; f.onload = function () { f.media = 'all'; }; d.head.appendChild(f);
+})();</script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"></noscript>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
 <style>
 /* A drafted world. Vellum page (light) / blueprint (dark). Corners: name top-left, then one project per corner in
    date order, each a white-card architectural model with only the product in colour. Centre: an ink globe whose arcs
@@ -76,7 +84,28 @@ body{margin:0;background:radial-gradient(ellipse at 50% 46%,var(--bg2),var(--bg)
 /* project corners */
 .tile{position:absolute;width:min(31vw,470px);height:min(46vh,430px);background:transparent;border:0;padding:0;cursor:pointer;color:var(--ink);text-align:left;font:inherit;display:flex;flex-direction:column;transition:opacity .35s}
 .tile .stage{flex:1;min-height:0;display:block;position:relative}
-.stage[data-loading]::after{content:"Loading model";position:absolute;inset:0;display:grid;place-items:center;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+/* a model on its way: a line saying so, with a bar that fills as it downloads */
+.stage .ld{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:none;flex-direction:column;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);white-space:nowrap;pointer-events:none}
+.stage[data-loading] .ld{display:flex}
+.stage.plated .ld{top:auto;bottom:10px;transform:translateX(-50%)}   /* once the product shows, the line moves out from in front of it */
+.stage .ld b{font-weight:400}
+.stage .ld .bar{position:relative;width:150px;height:2px;background:var(--line);overflow:hidden;border-radius:1px}
+.stage .ld .bar i{position:absolute;left:0;top:0;bottom:0;width:30%;background:var(--ink);opacity:.75;animation:ld-slide 1.3s ease-in-out infinite}
+.stage[data-p] .ld .bar i{animation:none;width:calc(var(--p, 0) * 1%);transition:width .35s}
+@keyframes ld-slide{from{transform:translateX(-100%)}to{transform:translateX(340%)}}
+/* while the globe loads: its outline turning in its place, with a line saying so */
+#globeLoad{position:absolute;overflow:hidden;pointer-events:none;transition:opacity .8s;-webkit-mask-image:linear-gradient(#000 62%,transparent);mask-image:linear-gradient(#000 62%,transparent)}
+#globeLoad.gone{opacity:0}
+#globeLoad svg{position:absolute;overflow:visible}
+#globeLoad svg *{fill:none;stroke:var(--mute);stroke-opacity:.38;stroke-width:1;vector-effect:non-scaling-stroke}
+#globeLoad .rim{stroke-opacity:.7;stroke-dasharray:2 7;animation:gl-turn 30s linear infinite}
+#globeLoad .mer{animation:gl-mer 5.4s linear infinite}
+#globeLoad .mer:nth-of-type(3){animation-delay:-1.8s}
+#globeLoad .mer:nth-of-type(4){animation-delay:-3.6s}
+#globeLoad span{position:absolute;transform:translate(-50%,-50%);font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);white-space:nowrap}
+@keyframes gl-turn{to{transform:rotate(360deg)}}
+@keyframes gl-mer{from{transform:scaleX(1)}to{transform:scaleX(-1)}}
+@media (prefers-reduced-motion:reduce){.stage .ld .bar i,#globeLoad .rim,#globeLoad .mer{animation:none}}
 .tile .cap{order:-1;display:flex;flex-direction:column;gap:3px;padding:0 2px 9px;border-bottom:1px solid var(--line);position:relative;z-index:1}
 .tile .cap b{font-family:var(--display);font-weight:400;font-size:clamp(25px,2vw,31px);line-height:1.05;display:flex;align-items:center;gap:10px}
 .tile .cap b i{width:9px;height:9px;border-radius:50%;background:var(--c);flex:none}
@@ -524,7 +553,7 @@ body.textpage .phead{display:none}
 @media (max-width:899px){.phead{padding:4px 0 16px}.phead .lede{font-size:17.5px}}
 </style>
 
-<div class="glwrap" id="glwrap"><canvas id="gl" aria-hidden="true"></canvas><div class="over" aria-hidden="true"><svg id="leaders"></svg><div id="pins"></div><div id="tip"></div></div></div>
+<div class="glwrap" id="glwrap"><canvas id="gl" aria-hidden="true"></canvas><div id="globeLoad" aria-hidden="true"><svg viewBox="-1 -1 2 2"><circle class="rim" r="1"/><circle class="mer" r="1"/><circle class="mer" r="1"/><circle class="mer" r="1"/><path d="M-1 0H1M-.866 -.5H.866M-.866 .5H.866"/></svg><span>Loading the globe</span></div><div class="over" aria-hidden="true"><svg id="leaders"></svg><div id="pins"></div><div id="tip"></div></div></div>
 <div class="page" id="page">
   <header class="name">
     <h1>Nag Murty</h1>
@@ -534,9 +563,9 @@ body.textpage .phead{display:none}
   </header>
   <div id="globeSlot"></div><div id="globeHit" aria-hidden="true"></div>
   <p class="totals" id="totals" hidden><span style="--c:var(--embrace)"><i></i><b>33</b> countries</span><span style="--c:var(--embrace)"><i></i><b>1.35M+</b> newborns’ lives impacted</span><span style="--c:var(--es)"><i></i><b>14+</b> US states</span></p>
-  <button class="tile tr" type="button" data-key="es" style="--c:var(--es)"><span class="stage" data-loading></span><span class="cap"><b><i></i>Electric Sheep Robotics</b><span>Founder and CEO</span><span class="place"><span class="lead">Robots that learned landscaping on real jobs.</span> We retrofitted commercial mowers and loaders to drive themselves, then bought landscaping companies so the robots worked real properties every day and kept getting better.</span></span></button>
-  <button class="tile br" type="button" data-key="embrace" style="--c:var(--embrace)"><span class="stage" data-loading></span><span class="cap"><b><i></i>Embrace</b><span>Co-founder and CTO</span><span class="place"><span class="lead">An infant warmer that needs no power at the bedside.</span> A pack that melts at 37&nbsp;°C keeps a premature baby at body temperature for hours, where incubators cost too much or the power keeps cutting out. It has impacted the lives of more than 1.35 million newborns, and Sudan and Zambia are building it into their national standards of newborn care.</span></span></button>
-  <button class="tile b3" type="button" data-key="qh" style="--c:var(--qh)"><span class="stage" data-loading></span><span class="cap"><b><i></i>Project Boundary</b><span>Founder and principal investigator</span><span class="place"><span class="lead">A smartwatch that nudged healthier choices at work.</span> An NSF-funded research project that began at HHS. Beacons by the stairs, the lift and the water fountain told the watch where you were, so a nudge arrived at the moment you were making the choice.</span></span></button>
+  <button class="tile tr" type="button" data-key="es" style="--c:var(--es)"><span class="stage" data-loading><span class="ld" aria-hidden="true"><b>Loading model</b><span class="bar"><i></i></span></span></span><span class="cap"><b><i></i>Electric Sheep Robotics</b><span>Founder and CEO</span><span class="place"><span class="lead">Robots that learned landscaping on real jobs.</span> We retrofitted commercial mowers and loaders to drive themselves, then bought landscaping companies so the robots worked real properties every day and kept getting better.</span></span></button>
+  <button class="tile br" type="button" data-key="embrace" style="--c:var(--embrace)"><span class="stage" data-loading><span class="ld" aria-hidden="true"><b>Loading model</b><span class="bar"><i></i></span></span></span><span class="cap"><b><i></i>Embrace</b><span>Co-founder and CTO</span><span class="place"><span class="lead">An infant warmer that needs no power at the bedside.</span> A pack that melts at 37&nbsp;°C keeps a premature baby at body temperature for hours, where incubators cost too much or the power keeps cutting out. It has impacted the lives of more than 1.35 million newborns, and Sudan and Zambia are building it into their national standards of newborn care.</span></span></button>
+  <button class="tile b3" type="button" data-key="qh" style="--c:var(--qh)"><span class="stage" data-loading><span class="ld" aria-hidden="true"><b>Loading model</b><span class="bar"><i></i></span></span></span><span class="cap"><b><i></i>Project Boundary</b><span>Founder and principal investigator</span><span class="place"><span class="lead">A smartwatch that nudged healthier choices at work.</span> An NSF-funded research project that began at HHS. Beacons by the stairs, the lift and the water fountain told the watch where you were, so a nudge arrived at the moment you were making the choice.</span></span></button>
 </div>
 <aside class="sheet" id="sheet" hidden aria-label="Project sheet">
   <span class="frame" aria-hidden="true"></span>
@@ -567,6 +596,30 @@ body.textpage .phead{display:none}
   <div class="grid" id="fbgrid"></div>
 </section>
 
+<script>(function () {   // keep the globe's outline where the globe will appear, until it does
+  var el = document.getElementById('globeLoad'); if (!el) return;
+  var svg = el.querySelector('svg'), lab = el.querySelector('span'), q = 0;
+  function place() {
+    q = 0; if (!el.isConnected) return;
+    var W = innerWidth, H = innerHeight, rpx, cx, cy, top, bot, right;
+    if (W >= 900) {   // the same layout the globe takes: left of the projects, under the name
+      var ts = document.querySelectorAll('.tile'), tx = Infinity, i;
+      for (i = 0; i < ts.length; i++) tx = Math.min(tx, ts[i].getBoundingClientRect().left);
+      var tl = isFinite(tx) && tx > 200 ? tx - 20 : W - 28 - Math.min(W * 0.31, 470), nb = document.querySelector('.name').getBoundingClientRect().bottom;
+      rpx = Math.min((tl - 48) / 2, H * 0.52); cx = 24 + (tl - 48) / 2; cy = nb + 46 + rpx; top = Math.max(0, nb); bot = H; right = tl;
+    } else {   // phones: in its slot in the page
+      var r = document.getElementById('globeSlot').getBoundingClientRect();
+      rpx = r.width * 0.47; cx = r.left + r.width / 2; cy = r.top + r.width * 0.04 + rpx; top = r.top; bot = r.bottom; right = W;
+    }
+    el.style.cssText = 'left:0;top:' + top + 'px;width:' + right + 'px;height:' + Math.max(0, bot - top) + 'px';
+    svg.style.cssText = 'left:' + (cx - rpx) + 'px;top:' + (cy - rpx - top) + 'px;width:' + 2 * rpx + 'px;height:' + 2 * rpx + 'px';
+    var y0 = Math.max(cy - rpx, top), y1 = Math.min(cy + rpx, bot);
+    lab.style.cssText = 'left:' + cx + 'px;top:' + ((y0 + y1) / 2 - top) + 'px';
+  }
+  function soon() { if (!q) q = requestAnimationFrame(place); }
+  place(); addEventListener('resize', soon); addEventListener('scroll', soon, {passive: true});
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(soon);
+})();</script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/GLTFLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/DRACOLoader.js"></script>
@@ -645,6 +698,7 @@ function showFallback(err) {
   if (err) console.error(err);
   document.getElementById('fbgrid').innerHTML = KEYS.map(k => `<article><div class="text">${textHTML(k)}</div><div class="tb">${tbHTML(k)}</div></article>`).join('');
   document.getElementById('fallback').hidden = false;
+  const gl = document.getElementById('globeLoad'); if (gl) gl.remove();
   document.getElementById('page').hidden = true;
   document.getElementById('gl').hidden = true;
 }
@@ -1040,6 +1094,7 @@ const DWG = (() => {
 })();
 </script>
 <script>
+const ASSET_BYTES = {"prod_skid.glb.txt": 436824, "prod_embrace.glb.txt": 359392, "prod_boundary.glb.txt": 73132, "prod_verdie.glb.txt": 212172, "site_qh.glb.txt": 714828, "site_embrace.glb.txt": 1203564, "site_es.glb.txt": 1563948};
 (function () {
 if (!window.THREE || !THREE.GLTFLoader) { showFallback('three missing'); return; }
 const V3 = THREE.Vector3;
@@ -1075,12 +1130,14 @@ const draco = new THREE.DRACOLoader();
 draco.setDecoderPath('draco/');
 gltfL.setDRACOLoader(draco);
 const P = (fn) => new Promise(fn);
+// how much of each file has arrived, for the corners' loading bars (ASSET_BYTES, the full sizes, is written in at build time)
+const got = {}; let onBytes = null;
 const load = {
   tex: (u) => P((res, rej) => new THREE.TextureLoader(manager).load(u, res, undefined, rej)),
   json: (u) => P((res, rej) => { const f = new THREE.FileLoader(manager); f.setResponseType('json'); f.load(u, res, undefined, rej); }),
   img: (u) => P((res, rej) => new THREE.ImageLoader(manager).load(u, res, undefined, rej)),
   // binary assets ship as base64 text (the host serves text, not .glb)
-  b64: (u) => P((res, rej) => { const f = new THREE.FileLoader(manager); f.setResponseType('text'); f.load(u, (t) => { const s = atob(t.trim()); const a = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) a[i] = s.charCodeAt(i); res(a.buffer); }, undefined, rej); }),
+  b64: (u) => P((res, rej) => { const f = new THREE.FileLoader(manager); f.setResponseType('text'); f.load(u, (t) => { got[u] = t.length; if (onBytes) onBytes(); const s = atob(t.trim()); const a = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) a[i] = s.charCodeAt(i); res(a.buffer); }, (e) => { got[u] = e.loaded; if (onBytes) onBytes(); }, rej); }),
 };
 // the decoder ships with the page: the WebAssembly build where the page may run it in a worker (several times faster), else the plain-JS one.
 // a tiny worker answers that in a few milliseconds; the decoder starts downloading as soon as it has, alongside the models
@@ -2697,6 +2754,7 @@ const outline = new THREE.Mesh(new THREE.RingGeometry(0.994, 1, 160), new THREE.
 outline.renderOrder = 5; gScene.add(outline);
 const globeTex = {};
 let globeHi = false;   // the 2k map shows first; on big screens the full-size one follows once the models are in
+let mapInR; const mapIn = P(r => { mapInR = r; });   // the first map is in (the globe waits for it, briefly, so it doesn't appear blank)
 function setGlobeTheme(dark) {
   const key = dark ? 'globe_blueprint' : 'globe_vellum', big = Math.min(innerWidth, innerHeight) >= 700;
   const best = () => { const k = isDark() ? 'globe_blueprint' : 'globe_vellum'; return globeTex[k + '.jpg'] || globeTex[k + '_2k.jpg']; };
@@ -2704,7 +2762,7 @@ function setGlobeTheme(dark) {
   [key + '_2k.jpg'].concat(big && globeHi ? [key + '.jpg'] : []).forEach((file, i) => {
     if (file in globeTex) return; globeTex[file] = null;
     (i ? P((res, rej) => new THREE.TextureLoader().load(file, res, undefined, rej)) : load.tex(file))
-      .then(t => { t.encoding = THREE.sRGBEncoding; t.anisotropy = 8; globeTex[file] = t; use(best()); }).catch(() => { delete globeTex[file]; });
+      .then(t => { t.encoding = THREE.sRGBEncoding; t.anisotropy = 8; globeTex[file] = t; use(best()); mapInR(); }).catch(() => { delete globeTex[file]; mapInR(); });
   });
   use(best());
   outline.material.color.copy(cssColor('--ink')); outline.material.opacity = dark ? 0.7 : 0.6;
@@ -3619,19 +3677,32 @@ function placeGL() {
 }
 addEventListener('resize', resize);
 async function boot() {
-  // the globe's data and map first, with the small corner products alongside; the big dioramas once the globe's data is in
+  // the globe first: its data and map were already on their way from the page's head. The models start once the globe's data is in,
+  // so they don't compete with it, and each corner shows a bar as its models arrive
   setGlobeTheme(isDark());
-  const globeData = Promise.all([load.json('sites.json'), load.img('globe_height.png')]);
+  const [meta, hImg] = await Promise.all([load.json('sites.json'), load.img('globe_height.png')]);
+  const tileFiles = (k) => ['prod_' + DWG.spec(TILE_PLATE[k]).file + '.glb.txt', 'site_' + k + '.glb.txt'];
+  let barQ = 0;
+  const bars = () => { barQ = 0; KEYS.forEach(k => {
+    const st = tileEls[k].querySelector('.stage'); if (!st.hasAttribute('data-loading')) return;
+    const pl = PLATE[TILE_PLATE[k]]; if (pl && pl.ready && !st.classList.contains('plated')) st.classList.add('plated');
+    const fs = tileFiles(k), tot = fs.reduce((a, f) => a + (ASSET_BYTES[f] || 0), 0); if (!tot) return;
+    const p = Math.min(100, Math.round(100 * fs.reduce((a, f) => a + Math.min(got[f] || 0, ASSET_BYTES[f] || 0), 0) / tot));
+    if (st.dataset.p === String(p)) return; st.dataset.p = p; st.style.setProperty('--p', p);
+    st.querySelector('.ld b').textContent = p >= 100 ? 'Preparing model' : `Loading model \u00b7 ${p}%`; }); };
+  onBytes = () => { if (!barQ) barQ = requestAnimationFrame(bars); };
+  const barTick = setInterval(() => { if (KEYS.every(k => !tileEls[k].querySelector('.stage').hasAttribute('data-loading'))) clearInterval(barTick); else onBytes(); }, 250);
   Object.values(TILE_PLATE).forEach(plateOf);   // the corner models (the same ones shown under each diorama)
-  const [meta, hImg] = await globeData;
   const siteGLB = {}; KEYS.forEach(k => { siteGLB[k] = load.glb('site_' + k + '.glb.txt'); });
   KEYS.forEach(k => { siteInfo[k] = meta.sites[k]; });
   globeMesh = new THREE.Mesh(buildGlobe(hImg), globeMat); gScene.add(globeMesh);
   setGlobeTheme(isDark());
   KEYS.forEach(buildReach);
   resize(); Object.assign(orbit, goal); orbit.rpx = goal.rpx * 0.85;
+  await Promise.race([mapIn, P(r => setTimeout(r, 2500))]);   // show the globe with its map on (it was preloaded, so this is usually no wait)
   ready = true; lastInput = performance.now() / 1000 + 2;   // a moment on Africa and Europe while the arcs set out
-  requestAnimationFrame(() => { canvas.classList.add('on'); setTimeout(globeUp, 0); });
+  requestAnimationFrame(() => { canvas.classList.add('on'); setTimeout(globeUp, 0);
+    const gl = document.getElementById('globeLoad'); if (gl) { gl.classList.add('gone'); setTimeout(() => gl.remove(), 900); } });
   // models load in the background; each corner fills in when its model is ready
   Promise.allSettled(KEYS.map(k => siteGLB[k])).then(() => { globeHi = true; setGlobeTheme(isDark()); });   // the full-size globe map, once the models are in
   KEYS.forEach(k => {
