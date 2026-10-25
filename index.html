@@ -618,6 +618,15 @@ const MARKS = [
   ['embrace', 'Sargur, India', 12.0, 76.4, 'A day at SVYM Hospital, with a four-pound baby in the warmer and a CNN crew in the corridor.'],
   ['embrace', 'London', 51.5, -0.12, 'An Embrace kit is in the Science Museum Group’s collection here.'],
   ['embrace', 'Denmark', 55.68, 12.57, 'The warmer won People’s Choice at the Danish INDEX: design awards.'],
+  ['embrace', 'Bangalore', 12.97, 77.59, 'Embrace’s home in India: the team moved here to refine the warmer and start its first hospital pilots.'],
+  ['embrace', 'Sumy, Ukraine', 50.91, 34.8, 'At the regional perinatal centre, staff carry newborns to the bomb shelter in the warmers. Before, they wrapped them in blankets in the cold.'],
+  ['embrace', 'Dnipro, Ukraine', 48.46, 35.05, 'UNICEF delivered the warmers to hospitals here.'],
+  ['embrace', 'Pokrovsk, Ukraine', 48.28, 37.18, 'One of the Ukrainian cities where UNICEF took the warmers into hospitals.'],
+  ['embrace', 'Odesa region, Ukraine', 47.2, 30.9, 'Doctors at the Berezivka Primary Healthcare Center use the warmers.'],
+  ['embrace', 'Port Sudan', 19.62, 37.22, 'Dr Gabra, who built Sudan’s biggest children’s ICU here after fleeing Khartoum, says the warmers are simple to use and keep working when the power doesn’t.'],
+  ['embrace', 'Tigray, Ethiopia', 14.15, 38.05, 'At Endabaguna Primary Hospital, with International Medical Corps: the only newborn ICU for more than 180,000 people, 43,000 of them displaced.'],
+  ['embrace', 'Kwimba, Tanzania', -2.9, 33.4, 'At Hungumalwa Health Centre, two hours from the nearest referral hospital, staff use the warmers alongside kangaroo care, with the Doris Mollel Foundation.'],
+  ['embrace', 'Kapiri Mposhi, Zambia', -13.97, 28.68, '15 warmers went to the district hospital here.'],
   ['embrace', 'San Jose', 37.33, -121.89, 'The warmer is one of the key pieces in The Tech Interactive’s exhibits, and Embrace won the Tech Awards’ Laureate Impact Award.'],
 ];
 const PARTS = [['problem', 'Problem'], ['built', 'Built'], ['result', 'Result']];
@@ -644,18 +653,19 @@ const REST_VIEW = [24, 22];   // the globe opens on Africa and Europe, then turn
 const latFor = (lon) => { const d = Math.abs(((lon + 95) % 360 + 540) % 360 - 180); return 24 + 10 * Math.max(0, 1 - d / 60); };
 const REACH = {
   embrace: {origin: [37.4275, -122.1697], place: 'Stanford, California', say: 'Embrace began here, in a class that asked for an infant warmer at 1% of an incubator’s cost.', view: [26, 8], zoom: 1.0, pts: [
-    ['Uganda', 1.4, 32.3, 0, null, '541 warmers going into 92 health facilities and 41 government ambulances across Masaka and Rwenzori.'], ['Ukraine', 49.0, 31.4, 1, null, '680 warmers deployed to hospitals across Ukraine during the war; nurses carried newborns in them to bomb shelters during air raids.'], ['Egypt', 26.8, 30.8], ['Gaza', 31.42, 34.37, 1, null, 'Warmers placed through UNRWA to keep displaced newborns warm.'], ['Sudan', 15.6, 30.2, 1, null, 'Now part of Sudan’s national newborn care: in the national training manual and health reporting, and being rolled out to every public health facility.'], ['Syria', 35.0, 38.5, 0, null, 'Newborns were kept warm in Embrace warmers here in 2025.'],
-    ['Chad', 15.4, 18.7], ['Armenia', 40.1, 45.0], ['Cameroon', 5.7, 12.7, 0, null, 'One of four countries the warmer reached for the first time in 2025.'], ['Algeria', 28.0, 2.6], ['Yemen', 15.6, 48.0, 1, null, 'Warmers in use here in 2025, one of more than 30 countries.'], ['Liberia', 6.4, -9.4],
+    ['Uganda', 1.4, 32.3, 0, null, '541 warmers going into 92 health facilities and 41 government ambulances across Masaka and Rwenzori.'], ['Ukraine', 49.0, 31.4, 1, null, 'Around 3,000 warmers deployed to Ukraine’s doctors and hospitals with UNICEF; nurses carried newborns in them to bomb shelters during air raids.'], ['Egypt', 26.8, 30.8], ['Gaza', 31.42, 34.37, 1, null, 'Warmers placed through UNRWA to keep displaced newborns warm.'], ['Sudan', 15.6, 30.2, 1, null, 'Now part of Sudan’s national newborn care: in the national training manual and health reporting, and being rolled out to every public health facility.'], ['Syria', 35.0, 38.5, 0, null, 'Newborns were kept warm in Embrace warmers here in 2025.'],
+    ['Chad', 15.4, 18.7], ['Armenia', 40.1, 45.0], ['Cameroon', 5.7, 12.7, 0, null, 'Among the warmer’s newest countries; twins here were among the babies kept warm.'], ['Algeria', 28.0, 2.6], ['Yemen', 15.6, 48.0, 1, null, 'Warmers in use here, one of the conflict zones the warmer reaches.'], ['Liberia', 6.4, -9.4],
     ['Senegal', 14.5, -14.5], ['Haiti', 19.0, -72.3, 1, null, 'A pilot with more than 30 warmers, while hospitals around it were closing.'], ['Guatemala', 15.7, -90.2], ['Mali', 17.6, -3.9], ['Nigeria', 9.1, 8.7], ['Gabon', -0.8, 11.6],
-    ['Angola', -11.2, 17.9], ['Central African Republic', 6.6, 20.9], ['Zambia', -13.1, 27.8, 0, null, 'Zambia’s Ministry of Health is writing it into the national standards for moving newborns; it is in use in eight hospitals.'], ['DR Congo', -2.9, 23.7, 0, null, 'Warmers in use here in 2025.'], ['Ethiopia', 9.1, 40.5, 0, null, 'New in 2025, joining more than 150 health facilities that used the warmer that year.'],
-    ['Kenya', 0.2, 37.9], ['Tanzania', -6.4, 34.9, 0, null, 'Warmers deployed to newborns in Tanzania’s hospitals.'], ['Malawi', -13.3, 34.3], ['Mozambique', -18.7, 35.5], ['Rwanda', -1.9, 29.9], ['Somalia', 5.2, 46.2],
+    ['Angola', -11.2, 17.9], ['Central African Republic', 6.6, 20.9], ['Zambia', -13.1, 27.8, 0, null, 'Zambia’s Ministry of Health is writing it into the national standards for moving newborns; it is in use in eight hospitals.'], ['DR Congo', -2.9, 23.7, 0, null, 'Warmers in use in hospitals here.'], ['Ethiopia', 9.1, 40.5, 0, null, 'Among the warmer’s newest countries.'],
+    ['Kenya', 0.2, 37.9], ['Tanzania', -6.4, 34.9, 0, null, 'Warmers deployed to newborns in Tanzania’s hospitals.'], ['Malawi', -13.3, 34.3], ['Mozambique', -18.7, 35.5], ['Rwanda', -1.9, 29.9], ['Somalia', 2.05, 45.32, 0, null, 'The warmer’s first pilot in Africa, at Banadir Hospital in Mogadishu, with the American Refugee Committee.'],
+    ['Türkiye', 37.6, 36.9, 1, null, 'Warmers went to newborns here after the earthquakes.'], ['Syria', 35.2, 38.6, 1, null, 'Warmers went to newborns here after the earthquakes, and Syria is still among the warmer’s countries.'],
     ['Afghanistan', 34.5, 69.2, 0, null, 'At Rabia Balkhi Hospital in Kabul, more than 1,700 babies were served in the warmers’ first three months.'], ['Beijing', 40.05, 116.6, 0, null, 'Long, born at 930 g, was kept warm in one of the first warmers at a Beijing baby home, and grew into a healthy toddler.'], ['Philippines', 12.9, 121.8], ['India', 21.0, 79.0, 0, null, 'We built the warmer here, ran its first trials, and got it into hospitals.']]},
   qh: {origin: [38.8868, -77.0144], place: 'Washington, DC', say: 'At HHS I started Project Boundary, an NSF-funded research project: beacons and a smartwatch that nudged healthier choices at work.', view: [36, -84], zoom: 1.3, pts: []},
   es: {origin: [38.25, -78.3], place: 'Virginia', say: 'I built Electric Sheep’s first robots in my garage here: commercial mowers and skid steers that drive themselves.', view: [37, -91], zoom: 1.3, cluster: true, pts: [
-    ['California', 34.1, -117.9, 0, null, 'Three of the four landscaping companies we bought are in California, and our robot mowers went to work on their lawns.'], ['Washington', 47.4, -120.5], ['Idaho', 43.9, -115.5], ['Texas', 31.0, -97.6], ['Arkansas', 34.8, -92.4], ['Tennessee', 35.9, -86.4, 0, null, 'We bought Phenix Landscape here, one of the four landscaping companies our robots learned on.'],
-    ['Minnesota', 45.4, -93.6], ['Michigan', 43.0, -84.6], ['Kentucky', 37.6, -85.3], ['Georgia', 33.0, -83.6], ['Florida', 28.2, -81.7],
-    ['Virginia', 37.6, -78.4], ['Maryland', 39.1, -76.9, 0, .3], ['Washington, DC', 38.9, -77.03, 0, .12], ['Pennsylvania', 40.6, -77.6],
-    ['Massachusetts', 42.3, -71.8, 0, .4], ['San Francisco', 37.5, -121.9, 0, .35, 'Electric Sheep’s home base. Its robots learned on hundreds of yards, and it was The Robot Report’s first Startup of the Year.']]}
+    ['California', 34.1, -117.9, 0, null, 'Three of the four landscaping companies we bought are in California, and our robot mowers went to work on their lawns.'], ['Washington', 47.4, -120.5, 0, null, 'Electric Sheep robots were deployed at several sites here.'], ['Idaho', 43.9, -115.5, 0, null, 'One of more than a dozen states where our robots worked.'], ['Texas', 31.0, -97.6, 0, null, 'Our robots worked several sites across Texas.'], ['Arkansas', 34.8, -92.4, 0, null, 'Electric Sheep robots were deployed at several sites here.'], ['Tennessee', 35.9, -86.4, 0, null, 'We bought Phenix Landscape here, one of the four landscaping companies our robots learned on.'],
+    ['Minnesota', 45.4, -93.6, 0, null, 'One of more than a dozen states where our robots worked.'], ['Michigan', 43.0, -84.6, 0, null, 'Our robots worked several sites in Michigan.'], ['Kentucky', 37.6, -85.3, 0, null, 'Electric Sheep robots were deployed at several sites here.'], ['Georgia', 33.0, -83.6, 0, null, 'Our robots worked several sites across Georgia.'], ['Florida', 28.2, -81.7, 0, null, 'Our robots worked several sites across Florida.'],
+    ['Virginia', 37.6, -78.4], ['Maryland', 39.1, -76.9, 0, .3, 'One of more than a dozen states where our robots worked.'], ['Washington, DC', 38.9, -77.03, 0, .12], ['Pennsylvania', 40.6, -77.6, 0, null, 'Electric Sheep robots were deployed at several sites here.'],
+    ['Massachusetts', 42.3, -71.8, 0, .4, 'Our robots worked sites here, and The Robot Report named Electric Sheep its first RBR50 Startup of the Year at the Robotics Summit in Boston.'], ['San Francisco', 37.5, -121.9, 0, .35, 'Electric Sheep’s home base. Its robots learned on hundreds of yards, and it was The Robot Report’s first Startup of the Year.']]}
 };
 
 // ---------------------------------------------------------------- the full story for each company, and the Ideas / About / Contact pages
@@ -767,7 +777,7 @@ const STORY = {
       ['What happened next', [
         'After I left, the Embrace nonprofit merged with Thrive Networks, and the warmer went out through much larger public health programmes.[5]',
         'The warmer has now impacted the lives of 1,355,911 babies in more than 30 countries.[6] It is part of national newborn care in Sudan: it is in the national training manual and the national health reporting system, and warmers are being rolled out to every public health facility in the country.[8] Zambia’s Ministry of Health is adding it to the sixth edition of the national standards for moving newborns.[9] Europe’s standards of care for newborn health list it as a lighthouse project.[10]',
-        'It has gone where incubators can’t. In Ukraine, UNICEF took the warmers into hospitals in Dnipro, Sumy and Pokrovsk, and nurses used them to carry newborns to bomb shelters during air raids.[11] They have since reached newborns in Gaza, Sudan, Yemen and Haiti.',
+        'It has gone where incubators can’t. Around 3,000 warmers went to Ukraine’s doctors and hospitals with UNICEF’s help.[14] UNICEF took them into hospitals in Dnipro, Sumy and Pokrovsk, and nurses used them to carry newborns to bomb shelters during air raids.[11] They have since reached newborns in Gaza, Sudan, Yemen and Haiti, and after the earthquakes in Türkiye and Syria.[14]',
         'One of the earliest babies was Long, a premature boy born at 930 g. He was kept warm in one of the first warmers at China Little Flower’s baby home in Beijing, and by his first birthday he was a healthy toddler.[7]']],
     ],
     recog: [['The Economist Innovation Award', 'Social and economic innovation, shared by the four co-founders'], ['INDEX: Design to Improve Life', 'People’s Choice'],
@@ -807,7 +817,8 @@ const STORY = {
           ['European Standards of Care for Newborn Health: the Embrace warmer as a lighthouse project', 'https://newborn-health-standards.org/implementation/lighthouse-projects/embrace-infant-warmer/'],
           ['UNICEF Ukraine: portable infant warmers save young lives', 'https://www.unicef.org/ukraine/en/stories/portable-infant-warmers-save-lives'],
           ['WHO: kangaroo mother care started immediately after birth', 'https://www.who.int/news/item/26-05-2021-kangaroo-mother-care-started-immediately-after-birth-critical-for-saving-lives-new-research-shows'],
-          ['NextBillion: GE Healthcare and Embrace to distribute the warmer', 'https://nextbillion.net/news/ge-health-embrace-to-distribute-infant-warmer-in-early-2011']],
+          ['NextBillion: GE Healthcare and Embrace to distribute the warmer', 'https://nextbillion.net/news/ge-health-embrace-to-distribute-infant-warmer-in-early-2011'],
+          ['CNN: Embrace’s incubators, from Ukraine to Gaza', 'https://www.cnn.com/2023/10/25/business/baby-incubators-israel-gaza/index.html']],
   },
   qh: {
     secs: [
@@ -3379,7 +3390,7 @@ function seat(c, x, y, cands, obst, dt) {
   return pick.r || {left: ex - w, right: ex + w, top: ey - h, bottom: ey};
 }
 // notes on the places the work reached take turns: one at a time, only on the side of the globe facing you
-let noteAge = 0, noteDot = null; const noteSeen = {};
+let noteAge = 0, noteDot = null, notePending = 0; const noteSeen = {};
 function placePins(t, dt) {
   const camDir = gCam.position.clone().normalize(), slot = wide() ? null : globeSlot.getBoundingClientRect();
   const obst = obstacles(), L = Math.max(34, Math.min(120, orbit.rpx * 0.34));
@@ -3407,11 +3418,14 @@ function placePins(t, dt) {
   noteAge += dt;
   if (noteDot && (!curN || !facing(curN))) { noteDot = null; noteAge = 0; }
   else if (curN) noteDot = curN;
-  if (!noteDot && noteAge > 0.5 || noteDot && noteAge > 5.2) {
+  const now = t, fresh = (c) => !(c.id in noteSeen) || now - noteSeen[c.id] > 40;
+  notePending = live.reduce((n, c) => n + (fresh(c) && facing(c) ? 1 : 0), 0);   // the globe slows while places in view still await their turn
+  if (!noteDot && noteAge > 0.5 || noteDot && noteAge > 4.6) {
     const was = noteDot && noteDot.id; noteDot = null; noteAge = 0;
-    const now = t, fresh = (c) => !(c.id in noteSeen) || now - noteSeen[c.id] > 40;
-    const pool = live.filter(c => facing(c) && c.id !== was).sort((p, q) => q.dir.dot(look) - p.dir.dot(look));
-    noteDot = pool.find(fresh) || null;
+    // places not yet shown go first, then those shown longest ago, so every one gets its turn over a few turns of the globe
+    const seenAt = (c) => c.id in noteSeen ? noteSeen[c.id] : -1e9;
+    const pool = live.filter(c => facing(c) && c.id !== was && fresh(c)).sort((p, q) => (seenAt(p) - seenAt(q)) || (q.dir.dot(look) - p.dir.dot(look)));
+    noteDot = pool[0] || null;
     if (noteDot) { noteSeen[noteDot.id] = now; note.k = noteDot.k; note.el.style.setProperty('--c', `var(--${noteDot.k})`);
       note.el.innerHTML = `<b><i></i>${noteDot.name}</b><span>${DATA[noteDot.k].name}</span><em>${noteDot.note}</em>`; }
   }
@@ -3627,11 +3641,11 @@ async function boot() {
     }).catch(e => { console.warn('model', k, e); tileEls[k].querySelector('.stage').removeAttribute('data-loading'); });
   });
   const h = (location.hash || '').slice(1); if (DATA[h]) setTimeout(() => open(h), 300);
-  let last = performance.now(), t = 0;
+  let last = performance.now(), t = 0, spin = 3.4;
   window.__setT = (v) => { t = v; };   // for checking a moment of the dioramas' animation
   function frame(now) {
     const dt = Math.min(0.05, (now - last) / 1000); last = now; t += dt;
-    if (!reduce && !cur && !gDown && !sweep && now / 1000 - lastInput > 3) { goal.lon -= dt * 3.4; goal.lat += (latFor(goal.lon) - goal.lat) * Math.min(1, dt * 0.6); }   // turning west
+    if (!reduce && !cur && !gDown && !sweep && now / 1000 - lastInput > 3) { spin += ((notePending > 1 ? 1.6 : 3.4) - spin) * Math.min(1, dt * 0.8); goal.lon -= dt * spin; goal.lat += (latFor(goal.lon) - goal.lat) * Math.min(1, dt * 0.6); }   // turning west, slower where there's more to read
     placeGL(); layoutGlobe(); updateGlobeCam(dt);
     stepActivity(now / 1000, dt);
     if (!reduce) anim.forEach(f => f(t, dt, cur || hoverKey));
