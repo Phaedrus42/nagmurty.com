@@ -184,15 +184,18 @@ body.focused .drawing{cursor:zoom-out}
 .annos{position:absolute;inset:0;pointer-events:none;overflow:hidden}
 @media (max-width:899px){.anno{font-size:9.5px}}
 .anno{position:absolute;left:0;top:0;padding:0 0 calc(var(--h,24px) + 6px);margin:0;border:0;background:none;cursor:pointer;pointer-events:auto;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--sheet-ink);white-space:nowrap;transition:opacity .3s;
-  text-shadow:0 0 2px var(--sheet),0 0 5px var(--sheet),0 0 8px var(--sheet)}
+  }
 .anno::after{content:"";position:absolute;left:50%;bottom:4px;height:var(--h,24px);border-left:1px solid var(--sheet-ink)}
 .anno::before{content:"";position:absolute;left:calc(50% - 3px);bottom:0;width:5px;height:5px;border-radius:50%;border:1px solid var(--sheet-ink);box-sizing:border-box;background:var(--sheet)}
 .anno.off{opacity:0;pointer-events:none}
-.anno i{display:inline-grid;place-items:center;width:19px;height:19px;margin-right:6px;border:1px solid var(--sheet-ink);border-radius:50%;font-style:normal;font-size:10px;letter-spacing:0;background:var(--sheet);text-shadow:none}
+/* the label sits on a dark glass pill, so it reads over any part of the model */
+.anno .anno-t{display:flex;width:max-content;align-items:center;gap:7px;padding:3px 10px 3px 3px;border-radius:999px;background:rgba(0,0,0,.62);color:#fff;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 1px 6px rgba(0,0,0,.25)}
+.anno:hover .anno-t{background:rgba(0,0,0,.78)}
+.anno i{display:inline-grid;place-items:center;width:19px;height:19px;border:1px solid rgba(255,255,255,.75);border-radius:50%;font-style:normal;font-size:10px;letter-spacing:0;background:none;color:#fff}
 .anno:hover,.anno.cur{text-decoration:underline;text-underline-offset:4px}
 .anno i svg{width:12px;height:12px;display:block}
 .anno.cur i .pv{display:none}
-.anno.cur i{background:var(--sheet-ink);color:var(--sheet)}
+.anno.cur i{background:#fff;color:#000;border-color:#fff}
 .dfoot .whole{display:none}
 body.focused .dfoot .whole{display:inline-block}
 
@@ -768,8 +771,7 @@ const STORY = {
         'Electric Sheep was acquired. Its AI and robots now go into electric outdoor equipment.[6]',
         'I wrote up the thinking behind the model in an essay, {open:ideas|The Robotics RL Sandbox}.']],
     ],
-    recog: [['RBR50 Startup of the Year', 'The Robot Report, in the award’s first year'], ['Three US patents', 'First inventor on all three'],
-            ['AI TechAward', 'For Electric Sheep']],
+    recog: [['RBR50 Startup of the Year', 'The Robot Report, in the award’s first year'], ['Three US patents', 'First inventor on all three']],
     press: [
       {o: 'The Robot Report', d: 'Apr 2024', k: 'Award · video', t: 'RBR50 Startup of the Year, in the award’s first year.', u: 'https://www.therobotreport.com/electric-sheep-wins-2024-rbr50-startup-of-the-year/', f: 1},
       {o: 'NVIDIA', d: 'Jan 2024', k: 'Blog', t: 'Its CES write-up on generative AI in robots: “Electric Sheep is developing a world model for autonomous lawn mowing.”', u: 'https://blogs.nvidia.com/blog/generative-ai-robotics-isaac/', f: 1},
@@ -913,7 +915,7 @@ const PAGES = {
       ['Bio', '<p>Naganand “Nag” Murty is an engineer and founder. He builds the first working versions of new hardware and gets them into use.</p><p>As co-founder and CTO of {open:embrace|Embrace}, he built the low-cost infant warmer that has since impacted the lives of more than 1.35 million newborns, and Sudan and Zambia are building it into their national standards of newborn care. At the HHS IDEA Lab he started {open:qh|Project Boundary}, a smartwatch that nudged healthier choices at work. He founded {open:es|Electric Sheep Robotics}, which trained outdoor robots on the work of landscaping companies it bought. Electric Sheep was acquired. He holds six US patents.</p>'],
       ['Education', '<p>IIT Bombay: BS and MS, Aerospace Engineering.</p><p>Stanford University: MS, Management Science and Engineering.</p>'],
       ['Patents', '<p>Six granted US patents: three on infant warming (Embrace) and three on robotics (Electric Sheep). <a href="https://patents.justia.com/inventor/naganand-murty" target="_blank" rel="noopener">Justia ↗</a></p>'],
-      ['Awards', '<p>Economist Innovation Award, to the Embrace co-founders. INDEX: Design to Improve Life, People’s Choice. RBR50 Startup of the Year and an AI TechAward, for Electric Sheep.</p>'],
+      ['Awards', '<p>Economist Innovation Award, to the Embrace co-founders. INDEX: Design to Improve Life, People’s Choice. RBR50 Startup of the Year, for Electric Sheep.</p>'],
       ['Government', '<p>West Health / HHS Innovator in Residence at the HHS IDEA Lab, working for HHS CTO Bryan Sivak, where he started {open:qh|Project Boundary}.</p>'],
       ['Outside work', '<p>Freediving and scuba. Poetry, once upon a time. A lifelong interest in consciousness.</p>'],
       ['For press', '<p class="quote">Nag Murty co-founded Embrace, which makes a low-cost infant warmer, and founded Electric Sheep Robotics, which built robots that learned landscaping on the job.</p><p class="muted">Headshots to be added.</p>'],
@@ -3515,7 +3517,7 @@ const ZOOM_ICON = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" st
 const hotBox = document.createElement('div'); hotBox.className = 'annos'; document.querySelector('.over').appendChild(hotBox);
 const hotEls = {}; let focused = null;
 Object.entries(HOT).forEach(([k, list]) => { hotEls[k] = list.map(([txt, p, z, h, prod], i) => {
-  const el = document.createElement('button'); el.type = 'button'; el.tabIndex = -1; el.className = 'anno off'; el.innerHTML = `<i aria-hidden="true">${ZOOM_ICON}</i>${txt}`; el.title = 'Look closer'; el.style.setProperty('--h', h + 'px'); hotBox.appendChild(el);
+  const el = document.createElement('button'); el.type = 'button'; el.tabIndex = -1; el.className = 'anno off'; el.innerHTML = `<span class="anno-t"><i aria-hidden="true">${ZOOM_ICON}</i>${txt}</span>`; el.title = 'Look closer'; el.style.setProperty('--h', h + 'px'); hotBox.appendChild(el);
   const a = {el, p: p ? (p.obj ? new V3() : new V3(...p)) : null, obj: p && p.obj, dy: p && p.y, z, name: txt, prod, h0: h, h}; el.addEventListener('click', () => focusOn(a.p, a.z, a)); return a; }); });
 function placeHots(cam, rect, clip) {
   const placed = [];   // labels that would overlap climb on longer leaders
@@ -3529,8 +3531,8 @@ function placeHots(cam, rect, clip) {
     const on = !!cam && cur === k && q.z < 1 && x > rect.left + 30 && x < rect.right - 30 && y > Math.max(rect.top, clip.top) + 46 && y < Math.min(rect.bottom, clip.bottom) - 4;
     a.el.classList.toggle('off', !on); a.el.classList.toggle('cur', focused === a); if (!on) return;
     const w = a.el.offsetWidth; let h = a.h0;
-    for (let s = 0; s < 5; s++) { const r = {left: x - w / 2 - 4, right: x + w / 2 + 4, top: y - (a.h0 + s * 22) - 26, bottom: y - (a.h0 + s * 22) - 6};
-      if (!placed.some(b => r.left < b.right && r.right > b.left && r.top < b.bottom && r.bottom > b.top) || s === 4) { h = a.h0 + s * 22; placed.push(r); break; } }
+    for (let s = 0; s < 5; s++) { const r = {left: x - w / 2 - 4, right: x + w / 2 + 4, top: y - (a.h0 + s * 30) - 34, bottom: y - (a.h0 + s * 30) - 4};
+      if (!placed.some(b => r.left < b.right && r.right > b.left && r.top < b.bottom && r.bottom > b.top) || s === 4) { h = a.h0 + s * 30; placed.push(r); break; } }
     if (h !== a.h) { a.h = h; a.el.style.setProperty('--h', h + 'px'); }
     a.el.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px) translate(-50%,-100%)`;
   }));
